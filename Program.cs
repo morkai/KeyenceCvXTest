@@ -20,6 +20,7 @@ namespace KeyenceCvXTest
         static ushort port = 8502;
         static ushort program = 0;
         static bool inlineImage = false;
+        static bool reset = false;
 
         static bool cancelled = false;
         static string resultPath = "";
@@ -72,6 +73,10 @@ namespace KeyenceCvXTest
 
                     case "--inline-image":
                         inlineImage = args[++i] == "1";
+                        break;
+
+                    case "--reset":
+                        reset = args[++i] == "1";
                         break;
                 }
             }
@@ -285,7 +290,14 @@ namespace KeyenceCvXTest
         {
             Console.Error.WriteLine("Resetting state...");
 
-            ExecuteCommand("RS"); // Reset
+            if (reset)
+            {
+                ExecuteCommand("RS"); // Reset
+            }
+            else
+            {
+                ExecuteCommand("CE"); // Clear error
+            }
         }
 
         private static void CheckInitialConditions()
